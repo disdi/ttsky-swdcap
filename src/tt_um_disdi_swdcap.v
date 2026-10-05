@@ -14,7 +14,7 @@
 //   EIO out  uo_out   written by the host at DMI 0x0201
 //
 // clk is the debug clock and must be running. rst_n resets both the debug clock domain and,
-// asynchronously, the SWCLK domain.
+// asynchronously, the SWCLK domain. The reset asserts at once and is released on a clk edge.
 module tt_um_disdi_swdcap (
     input  wire [7:0] ui_in,    // Dedicated inputs
     output wire [7:0] uo_out,   // Dedicated outputs
@@ -29,6 +29,16 @@ module tt_um_disdi_swdcap (
   wire swdio_o;
   wire swdio_oe;
 
+  // Reset synchroniser: rst_n low resets immediately; the release is aligned to clk, so every
+  // flop leaves reset on the same edge. SWCLK is stopped while the board holds reset, so the
+  // SWCLK domain can share this signal.
+  reg [1:0] rst_sync;
+  always @(posedge clk or negedge rst_n) begin
+    if (!rst_n) rst_sync <= 2'b11;
+    else        rst_sync <= {rst_sync[0], 1'b0};
+  end
+  wire reset = rst_sync[1];
+
   SwdcapTop swdcap (
       .swclk   (uio_in[2]),
       .swdio_i (uio_in[4]),
@@ -36,7 +46,7 @@ module tt_um_disdi_swdcap (
       .swdio_oe(swdio_oe),
       .eio_in  (ui_in),
       .eio_out (uo_out),
-      .reset   (!rst_n),
+      .reset   (reset),
       .clk     (clk)
   );
 
