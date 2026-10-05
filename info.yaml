@@ -1,53 +1,54 @@
 # Tiny Tapeout project information
 project:
-  title:        ""      # Project title
-  author:       ""      # Your name
+  title:        "swdcap: SWD debug port with EIO"      # Project title
+  author:       "Saket Sinha"      # Your name
   discord:      ""      # Your discord username, for communication and automatically assigning you a Tapeout role (optional)
-  description:  ""      # One line description of what your project does
-  language:     "Verilog" # other examples include SystemVerilog, Amaranth, VHDL, etc
-  clock_hz:     0       # Clock frequency in Hz (or 0 if not applicable)
+  description:  "SWD target that any CMSIS-DAP probe can identify, with 8 inputs and 8 outputs behind it"      # One line description of what your project does
+  language:     "SpinalHDL" # other examples include SystemVerilog, Amaranth, VHDL, etc
+  clock_hz:     50000000       # Clock frequency in Hz (or 0 if not applicable)
 
   # How many tiles your design occupies? A single tile is about 167x108 uM.
-  tiles: "1x1"          # Valid values: 1x1, 1x2, 2x2, 3x2, 4x2, 6x2 or 8x2
+  tiles: "1x2"          # Valid values: 1x1, 1x2, 2x2, 3x2, 4x2, 6x2 or 8x2
 
   # Your top module name must start with "tt_um_". Make it unique by including your github username:
-  top_module:  "tt_um_example"
+  top_module:  "tt_um_disdi_swdcap"
 
   # List your project's source files here.
   # Source files must be in ./src and you must list each source file separately, one per line.
   # Don't forget to also update `PROJECT_SOURCES` in test/Makefile.
   source_files:
-    - "project.v"
+    - "tt_um_disdi_swdcap.v"
+    - "SwdcapTop.v"
 
 # The pinout of your project. Leave unused pins blank. DO NOT delete or add any pins.
 # This section is for the datasheet/website. Use descriptive names (e.g., RX, TX, MOSI, SCL, SEG_A, etc.).
 pinout:
   # Inputs
-  ui[0]: ""
-  ui[1]: ""
-  ui[2]: ""
-  ui[3]: ""
-  ui[4]: ""
-  ui[5]: ""
-  ui[6]: ""
-  ui[7]: ""
+  ui[0]: "EIO in 0"
+  ui[1]: "EIO in 1"
+  ui[2]: "EIO in 2"
+  ui[3]: "EIO in 3"
+  ui[4]: "EIO in 4"
+  ui[5]: "EIO in 5"
+  ui[6]: "EIO in 6"
+  ui[7]: "EIO in 7"
 
   # Outputs
-  uo[0]: ""
-  uo[1]: ""
-  uo[2]: ""
-  uo[3]: ""
-  uo[4]: ""
-  uo[5]: ""
-  uo[6]: ""
-  uo[7]: ""
+  uo[0]: "EIO out 0"
+  uo[1]: "EIO out 1"
+  uo[2]: "EIO out 2"
+  uo[3]: "EIO out 3"
+  uo[4]: "EIO out 4"
+  uo[5]: "EIO out 5"
+  uo[6]: "EIO out 6"
+  uo[7]: "EIO out 7"
 
   # Bidirectional pins
   uio[0]: ""
   uio[1]: ""
-  uio[2]: ""
+  uio[2]: "SWCLK (in)"
   uio[3]: ""
-  uio[4]: ""
+  uio[4]: "SWDIO (bidirectional, external pull-up)"
   uio[5]: ""
   uio[6]: ""
   uio[7]: ""
